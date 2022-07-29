@@ -1,14 +1,14 @@
 package br.com.cuncurrency.atomicity;
 
 import br.com.concurrency.atomicity.AtomicityThread;
-import br.com.concurrency.atomicity.ErrorCuncurrencyAtomicity;
+import br.com.concurrency.atomicity.ErrorConcurrencyAtomicity;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-public class ErrorCuncurrencyAtomicityTest {
+public class ErrorConcurrencyAtomicityTest {
     @Test
     public void testCuncurrencyAtomicityWhenError() throws InterruptedException {
-        final AtomicityThread errorCuncurrencyAtomicity = new ErrorCuncurrencyAtomicity();
+        final AtomicityThread errorCuncurrencyAtomicity = new ErrorConcurrencyAtomicity();
         boolean execute = errorCuncurrencyAtomicity.execute();
         Assertions.assertFalse(execute);
     }
