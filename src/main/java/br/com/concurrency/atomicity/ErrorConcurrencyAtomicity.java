@@ -1,33 +1,33 @@
 package br.com.concurrency.atomicity;
 
 public class ErrorConcurrencyAtomicity implements AtomicityThread {
-    private static Integer LIMIT_ID_INCREMENT = 22000;
+    private static Integer LIMIT_ID_INCREMENT = 400;
+    private static int EXPECTED_INCREMENT_BY_EXECUTION = 80;
     private static long id;
 
     @Override
     public boolean execute() {
-        int incrementForExecution = 1100;
         long currentValue;
         do {
-            currentValue = id;
+            currentValue = this.getId();
 
             this.startSequenceOfThreads();
 
             this.logCurrentValue();
 
-            if (isValidIncrement(incrementForExecution, currentValue)) continue;
+            if (isValidIncrement(EXPECTED_INCREMENT_BY_EXECUTION, currentValue)) continue;
 
             this.logValueinconsistencyFailure();
             return false;
 
-        } while (id < LIMIT_ID_INCREMENT);
+        } while (this.getId() < LIMIT_ID_INCREMENT);
         return true;
     }
 
     @Override
     public void startSequenceOfThreads() {
-        final Thread t1 = new Thread(new WriteAndReadAtomicityRunnable(10));
-        final Thread t2 = new Thread(new WriteAndReadAtomicityRunnable(100));
+        final Thread t1 = new Thread(new ErrorConcurrencyAtomicityRunnable());
+        final Thread t2 = new Thread(new ErrorConcurrencyAtomicityRunnable());
         t1.start();
         t2.start();
         try {
@@ -39,15 +39,15 @@ public class ErrorConcurrencyAtomicity implements AtomicityThread {
     }
 
     @Override
-    public void logCurrentValue() {
-        System.out.println(id);
+    public long getId() {
+        return id;
     }
 
-    record WriteAndReadAtomicityRunnable(long incrementValue) implements Runnable {
+    record ErrorConcurrencyAtomicityRunnable() implements Runnable {
         @Override
         public void run() {
-            for (int i = 0; i < 10; i++) {
-                id += incrementValue;
+            for (int i = 0; i < 20; i++) {
+                id += 2;
                 try {
                     Thread.sleep(100);
                 } catch (InterruptedException e) {

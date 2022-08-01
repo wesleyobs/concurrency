@@ -1,7 +1,5 @@
-package br.com.cuncurrency.atomicity;
+package br.com.concurrency.atomicity;
 
-import br.com.concurrency.atomicity.AtomicityThread;
-import br.com.concurrency.atomicity.ErrorConcurrencyAtomicity;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
